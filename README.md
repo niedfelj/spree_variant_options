@@ -1,4 +1,4 @@
-# Spree Variant Options [![Build Status](https://secure.travis-ci.org/citrus/spree_variant_options.png)](http://travis-ci.org/citrus/spree_variant_options)
+# Spree Variant Options [![Build Status](https://travis-ci.org/AgilTec/spree_variant_options.svg?branch=2-2-stable)](https://travis-ci.org/AgilTec/spree_variant_options)
 
 
 Spree Variant Options is a very simple spree extension that replaces the radio-button variant selection with groups of option types and values. To get a better idea let's let a few images do the explaining.
@@ -26,7 +26,14 @@ If you don't already have an existing Spree site, [click here](https://gist.gith
 To install Spree Variant Options, just add the following to your Gemfile:
 
 ```ruby
-gem 'spree_variant_options', '0.5.0'
+# Spree 1.3.X
+gem 'spree_variant_options', :git => 'git://github.com/sbounmy/spree_variant_options.git', :branch => "1-3-stable"
+# Spree 2.0.X
+gem 'spree_variant_options', :git => 'git://github.com/sbounmy/spree_variant_options.git', :branch => "2-0-stable"
+# Spree 2.4.X
+gem 'spree_variant_options', :git => 'git://github.com/AgilTec/spree_variant_options.git', :branch => "2-4-stable"
+# Spree 3.0.X
+gem 'spree_variant_options', :git => 'git://github.com/AgilTec/spree_variant_options.git', :branch => "3.0.0"
 ```
 
 If you're on an older version of Spree, please reference the [Versionfile](https://github.com/citrus/spree_variant_options/blob/master/Versionfile) for your Spree version.
@@ -65,25 +72,15 @@ Spree Variant Options comes with some handy options:
 - default_instock (default: false)
   If this is option is set to true, it will automatically preselect in-stock variant options.
 
+- main_option_type_id (default: 1)
+  This is the option type id that will be use for showing each variant in the home.
+- main_option_type_label (default: 'color')
+  This is the option type label that will be use as URL parameter to preselect the option in the product show page.
+
 These configuration options can be set in a config/initializers/spree_variant_options.rb file for example :
 ```ruby
 SpreeVariantOptions::VariantConfig.allow_select_outofstock = true
 SpreeVariantOptions::VariantConfig.default_instock = true
-```
-
-### Storage options
-Like in spree core there is support for storage of images on S3.
-Storage on S3 is enabled with the same configuration as in spree core.
-
-Example: config/initializers/spree.rb
-
-```ruby
-Spree.config do |config|
-  config.use_s3 = true
-  config.s3_bucket = <bucket_name>
-  config.s3_access_key = <aws_access_key>
-  config.s3_secret = <aws_secret_key>
-end
 ```
 
 ------------------------------------------------------------------------------
@@ -106,13 +103,13 @@ bundle install
 bundle exec dummier
 
 # cucumber/capybara
-bundle exec rake cucumber
+bundle exec cucumber
 
 # test/unit
 bundle exec rake test
 
 # both
-bundle exec rake 
+bundle exec rake
 ```
 
 POW!
@@ -134,7 +131,7 @@ cd test/dummy
 rails s
 ```
 
-    
+
 ------------------------------------------------------------------------------
 Contributors
 ------------------------------------------------------------------------------

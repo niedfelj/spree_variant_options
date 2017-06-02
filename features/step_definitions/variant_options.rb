@@ -28,7 +28,7 @@ Given /^I( don't)? allow backorders$/ do |dont|
 end
 
 Given /^I have a product( with variants)?( and images)?$/ do |has_variants, has_images|
-  @product = Factory.create(has_variants ? :product_with_variants : :product)
+  @product = FactoryGirl.create(has_variants ? :product_with_variants : :product)
   unless has_images.nil?
     @product.images.create(:attachment => random_image, :alt => @product.name)
     unless has_variants.nil?
@@ -105,7 +105,7 @@ end
 Then /^the source should contain the options hash$/ do
   assert source.include?("options: #{@product.variant_options_hash.to_json}")
   assert source.include?("track_inventory_levels: #{!!Spree::Config[:track_inventory_levels]}")
-  assert source.include?("allow_backorders: #{!!Spree::Config[:allow_backorders]}")
+  #  assert source.include?("allow_backorders: #{!!Spree::Config[:allow_backorders]}")
   assert source.include?("allow_select_outofstock: #{!!SpreeVariantOptions::VariantConfig[:allow_select_outofstock]}")
 end
 
@@ -122,18 +122,19 @@ Then /^I should see (enabled|disabled)+ links for the ((?!option).*) option type
     link = find("#option_type_#{option_type.id} a[rel='#{option_type.id}-#{value.id}']")
     assert_not_nil link
     assert_equal value.presentation, link.text
-    assert_equal "#", link.native.attribute('href').last
-    assert_equal "option-value #{enabled ? 'in-stock' : 'locked'}", link.native.attribute('class')
-    assert_equal rel, link.native.attribute('rel') # obviously!
+    assert_not_nil link.has_selector?('href')
+    class_ = "option-value #{enabled ? 'in-stock' : 'locked'}"
+    link.has_selector?("[class='#{class_}']")
+    link.has_selector?("[rel='#{rel}']")
   end
 end
 
 Then /^I should have a hidden input for the selected variant$/ do
   flunk unless @product
-  field = find("input[type=hidden]#variant_id")
+  field = page.find("input[type=hidden]#variant_id")
   assert_not_nil field
-  assert_equal "products[#{@product.id}]", field.native.attribute("name")
-  assert_equal "", field.native.attribute("value")
+  assert_equal "products[#{@product.id}]", field[:name]
+  assert_equal "", field[:value]
 end
 
 Then /^the add to cart button should be (enabled|disabled)?$/ do |state|

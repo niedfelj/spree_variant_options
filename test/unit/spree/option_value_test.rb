@@ -23,7 +23,7 @@ class Spree::OptionValueTest < ActiveSupport::TestCase
   context "an existing option value" do
 
     setup do
-      @option_value = Factory.create(:option_value)
+      @option_value = create(:option_value)
     end
 
     should "not have an image" do
@@ -56,26 +56,20 @@ class Spree::OptionValueTest < ActiveSupport::TestCase
 
   context "#for_product" do
     setup do
-      @product = Factory.create(:product_with_variants)
+      @product = create(:product_with_variants)
     end
 
     should "return uniq option_values" do
-      unused = Factory(:option_value, :option_type => @product.option_types.first, :presentation => "Unused")
+      unused = create(:option_value, :option_type => @product.option_types.first, :presentation => "Unused")
       assert !Spree::OptionValue.for_product(@product).include?(unused)
     end
 
-    should "retain option values sort order" do
-      @unordered, @prev_position = false, 0
-      Spree::OptionValue.for_product(@product).all.each do |ov|
-        @unordered = true if @prev_position > ov.position
-        @prev_position = ov.position
-      end
-
-      assert !@unordered
+    should "retain option type order by position" do
+      assert_equal [1, 1, 1, 1, 2, 2, 2, 2, 2, 2 ,2 ,2], Spree::OptionValue.for_product(@product).order_by_positions.map(&:option_type_id)
     end
 
     should "return empty array when no variants" do
-      product = Factory(:product)
+      product = create(:product)
       assert_equal [], Spree::OptionValue.for_product(product)
     end
   end

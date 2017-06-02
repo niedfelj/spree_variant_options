@@ -9,7 +9,7 @@ class Spree::ProductTest < ActiveSupport::TestCase
   context "any product" do
 
     setup do
-      @product = Factory.create(:product)
+      @product = create(:product)
     end
 
     should "have proper methods" do
@@ -24,10 +24,11 @@ class Spree::ProductTest < ActiveSupport::TestCase
   context "a product with variants" do
 
     setup do
-      @product = Factory.create(:product_with_variants)
+      @product = create(:product_with_variants)
     end
 
     should "have variants and option types and values" do
+
       assert_equal 2,  @product.option_types.count
       assert_equal 12, @product.option_values.count
       assert_equal 32, @product.variants.count

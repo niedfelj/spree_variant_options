@@ -1,4 +1,5 @@
-class Test::Unit::TestCase
+
+class MiniTest::Unit::TestCase
   def self.should_have_attached_file(attachment)
     klass = self.name.gsub(/Test$/, '').constantize
 

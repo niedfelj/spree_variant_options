@@ -16,6 +16,8 @@ module HelperMethods
   def assert_seen(text, opts={})
     if opts[:within]
       within(opts[:within]) do
+        puts "text: #{text}"
+        puts "opts: #{opts.inspect}"
         assert has_content?(text)
       end
     else

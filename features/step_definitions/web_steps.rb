@@ -65,8 +65,10 @@ Given /^I'm on the ((?!page).*) page for (.*)$/ do |path, id|
     else id
   end
   path = "#{path.downcase.gsub(/\s/, '_')}_path".to_sym
-  begin 
+  begin
+    puts "path: #{path}, id: #{id.inspect}, send(path, id): #{send(path, id)}"
     visit send(path, id)
+    puts "current url: #{page.current_url}"
   rescue 
     puts "#{path}(#{id.to_param}) could not be found!"
   end
